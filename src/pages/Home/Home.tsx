@@ -5,18 +5,19 @@ import Article from "../../components/Article/Article";
 import Footer from "../../components/Footer/Footer";
 import Add from "../../components/Add/Add";
 import Modal from "../../components/Modal/Modal";
+import {IArticle} from "../../models/IArticle";
+import { useHistory } from "react-router-dom";
 
-export default function Home() {
-    const [articles, setArticles] = useState([]);
+interface IHomeProps {
+    articles: IArticle[];
+    readMoreClicked: (number) => void;
+}
+
+export default function Home(props: IHomeProps) {
     const [pageNo, setPageNo] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const history = useHistory();
     const ARTICLES_PER_PAGE = 3;
-
-    useEffect(async () => {
-        const result = await fetch("http://localhost:4000/articles");
-        const resultjson = await result.json();
-        setArticles(resultjson);
-    }, [])
 
     function increasePage() {
         setPageNo(pageNo + 1);
@@ -46,15 +47,21 @@ export default function Home() {
         // pass
     }
 
+    function readMore(articleId: number) {
+        props.readMoreClicked(articleId);
+        history.push("/details");
+    }
+
     return <div className="page-home">
         <h1>Home</h1>
         <Add callback={openModal}/>
         <div>
-            {articles.slice((pageNo-1) * ARTICLES_PER_PAGE, (pageNo-1) * ARTICLES_PER_PAGE + 3).map((article) =>
+            {props.articles.slice((pageNo-1) * ARTICLES_PER_PAGE, (pageNo-1) * ARTICLES_PER_PAGE + 3).map((article) =>
                 <Article 
                     article={article}
                     editCallback={editArticle}
                     deleteCallback={deleteArticle}
+                    readMoreCallback={readMore}
                 />
             )}
         </div>
@@ -66,7 +73,7 @@ export default function Home() {
             increaseFunc={increasePage} 
             decreaseFunc={decreasePage}
             shouldDisplayPrev={pageNo != 1}
-            shouldDisplayNext={pageNo != Math.ceil(articles.length / ARTICLES_PER_PAGE)}
+            shouldDisplayNext={pageNo != Math.ceil(props.articles.length / ARTICLES_PER_PAGE)}
             />
     </div>;
 }
