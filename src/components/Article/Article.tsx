@@ -25,7 +25,7 @@ export default function Article(props: IArticleProps) {
             <button type="button" className="actions__btn" onClick={() => props.deleteCallback(props.article.id)}>Delete</button>
         </div>
 
-        <img src={props.article.imgUrl} alt="Image" />
+        <img src={props.article.imgUrl} alt=""/>
 
         <div className="content__container">
             <p>{props.article.content}</p>

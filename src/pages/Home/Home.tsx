@@ -1,12 +1,12 @@
 import React from 'react';
 import './home.css';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Article from "../../components/Article/Article";
 import Footer from "../../components/Footer/Footer";
 import Add from "../../components/Add/Add";
 import Modal from "../../components/Modal/Modal";
 import {IArticle} from "../../models/IArticle";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 interface IHomeProps {
     articles: IArticle[];
@@ -72,8 +72,8 @@ export default function Home(props: IHomeProps) {
         <Footer 
             increaseFunc={increasePage} 
             decreaseFunc={decreasePage}
-            shouldDisplayPrev={pageNo != 1}
-            shouldDisplayNext={pageNo != Math.ceil(props.articles.length / ARTICLES_PER_PAGE)}
+            shouldDisplayPrev={pageNo !== 1}
+            shouldDisplayNext={pageNo !== Math.ceil(props.articles.length / ARTICLES_PER_PAGE)}
             />
     </div>;
 }

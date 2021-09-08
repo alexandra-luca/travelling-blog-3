@@ -6,6 +6,8 @@ import {IArticle} from "../../models/IArticle";
 interface IDetailsProps {
     articles: IArticle[];
     selectedArticleId: number;
+    prevClicked: () => void;
+    nextClicked: () => void;
 }
 
 export default function Details(props: IDetailsProps) {
@@ -31,7 +33,7 @@ export default function Details(props: IDetailsProps) {
                             <li className="info__item">{article.date}</li>
                         </ul>
 
-                        <img src={article.imgUrl} alt="Image"/>
+                        <img src={article.imgUrl} alt=""/>
 
                         <div className="content__container">
                             <p>{article.content.slice(0, article.content.indexOf('.', article.content.length/2) + 1)}</p>
@@ -43,8 +45,8 @@ export default function Details(props: IDetailsProps) {
             </main>
 
             <footer className="footer">
-                <button className="footer__link">previous article</button>
-                <button className="footer__link footer__link--next">next article</button>
+                {article && article.id > 1 && <button className="footer__link" onClick={props.prevClicked}>previous article</button>}
+                {article && article.id < props.articles.length && <button className="footer__link footer__link--next" onClick={props.nextClicked}>next article</button>}
             </footer>
         </div>
     </div>

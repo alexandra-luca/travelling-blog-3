@@ -16,10 +16,13 @@ function App() {
   const [articles, setArticles] = useState([]);
   const [selectedArticleId, setSelectedArticleId] = useState(2);
   
-  useEffect(async () => {
-    const result = await fetch("http://localhost:4000/articles");
-    const resultjson = await result.json();
-    setArticles(resultjson);
+  useEffect(() => {
+    async function fetchData() {
+      const result = await fetch("http://localhost:4000/articles");
+      const resultjson = await result.json();
+      setArticles(resultjson);
+    }
+    fetchData();
   }, [])
 
   function changeSelectedArticle(articleId: number) {
@@ -32,7 +35,11 @@ function App() {
         <Menu/>
         <Switch>
           <Route path="/details">
-            <Details articles={articles} selectedArticleId={selectedArticleId} />
+            <Details 
+              articles={articles} 
+              selectedArticleId={selectedArticleId} 
+              prevClicked={() => setSelectedArticleId(selectedArticleId-1)} 
+              nextClicked={() => setSelectedArticleId(selectedArticleId+1)} />
           </Route>
           <Route path="/">
             <Home articles={articles} readMoreClicked={changeSelectedArticle} />
